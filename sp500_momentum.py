@@ -500,20 +500,35 @@ def apply_tax_impact(bt, holding_months=1, starting_capital=10_000):
             
             # Year-end calculations
             net_gain = balance - balance_start
-            taxable_gain = max(0, net_gain - loss_cf)
             
-            if taxable_gain > 0:
-                tax_paid = taxable_gain * tax_rate
-                balance -= tax_paid
-                loss_cf_remaining = 0.0
-            else:
+            if net_gain < 0:
+                # LOSS YEAR: Can deduct up to $3,000, rest carries forward
+                current_year_loss = abs(net_gain)
+                deductible_loss = min(current_year_loss, 3_000)  # $3,000 annual limit
+                loss_cf_remaining = current_year_loss - deductible_loss
                 tax_paid = 0.0
-                loss_cf_remaining = abs(net_gain - loss_cf)
+                taxable_gain = 0.0
+                loss_used = 0.0
+            else:
+                # GAIN YEAR: Use carried-forward losses to reduce taxable gain
+                deductible_loss = 0.0
+                loss_used = min(loss_cf, net_gain)
+                taxable_gain = max(0, net_gain - loss_used)
+                
+                if taxable_gain > 0:
+                    tax_paid = taxable_gain * tax_rate
+                    balance -= tax_paid
+                else:
+                    tax_paid = 0.0
+                
+                # Remaining loss carry-forward
+                loss_cf_remaining = loss_cf - loss_used
             
             yearly_detail.append({
                 "Year": year,
                 "Net Gain": net_gain,
-                "Loss C/F Used": min(loss_cf, max(0, net_gain)),
+                "Deductible Loss ($3k limit)": deductible_loss if net_gain < 0 else 0.0,
+                "Loss C/F Used": loss_used,
                 "Taxable Gain": taxable_gain,
                 "Tax Paid": tax_paid,
                 "Loss C/F Remaining": loss_cf_remaining
@@ -594,9 +609,9 @@ def report_tax_impact(bt, holding_months=1, starting_capital=10_000):
         _header("STRATEGY - YEARLY TAX BREAKDOWN")
         yearly = tax_data["Strategy"]["_yearly_detail"]
         yearly_df = pd.DataFrame(yearly)
-        annual_cols = ["Year", "Net Gain", "Loss C/F Used", "Taxable Gain", "Tax Paid", "Loss C/F Remaining"]
+        annual_cols = ["Year", "Net Gain", "Deductible Loss ($3k limit)", "Loss C/F Used", "Taxable Gain", "Tax Paid", "Loss C/F Remaining"]
         for col in annual_cols:
-            if col in ["Net Gain", "Loss C/F Used", "Taxable Gain", "Tax Paid", "Loss C/F Remaining"]:
+            if col in ["Net Gain", "Deductible Loss ($3k limit)", "Loss C/F Used", "Taxable Gain", "Tax Paid", "Loss C/F Remaining"]:
                 yearly_df[col] = yearly_df[col].apply(lambda x: f"${x:,.0f}")
         print(yearly_df[annual_cols].to_string(index=False))
 
