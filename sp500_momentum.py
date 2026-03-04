@@ -765,7 +765,7 @@ def report_backtest(bt, lookback, skip, top_n):
         "Benchmark (%)": ((1 + x["Benchmark"]).prod() - 1) * 100,
     })
     
-    # Compute year-end values
+    # Compute year-end values (cumulative)
     annual_list = []
     strat_val = 10_000
     bench_val = 10_000
@@ -773,8 +773,10 @@ def report_backtest(bt, lookback, skip, top_n):
         year_data = bt[bt.index.year == year]
         strat_ret = ((1 + year_data["Strategy"]).prod() - 1) * 100
         bench_ret = ((1 + year_data["Benchmark"]).prod() - 1) * 100
-        strat_val *= (1 + year_data["Strategy"].prod())
-        bench_val *= (1 + year_data["Benchmark"].prod())
+        
+        # Calculate cumulative portfolio values
+        strat_val *= (1 + year_data["Strategy"]).prod()
+        bench_val *= (1 + year_data["Benchmark"]).prod()
         excess_ret = strat_ret - bench_ret
         
         annual_list.append({
