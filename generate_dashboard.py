@@ -348,7 +348,7 @@ html_content = f"""
                     <div class="stat-value positive">{backtest_strat_return:+.2f}%</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Benchmark Return (Monthly)</div>
+                    <div class="stat-label">SPY Return</div>
                     <div class="stat-value">{backtest_bench_return:+.2f}%</div>
                 </div>
                 <div class="stat-card">
@@ -373,11 +373,11 @@ html_content = f"""
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_strat_end_normalized:,.2f}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>Benchmark Start Value</strong></td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>SPY Start Value</strong></td>
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_bench_start_normalized:,.2f}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px;"><strong>Benchmark End Value</strong></td>
+                        <td style="padding: 10px;"><strong>SPY End Value</strong></td>
                         <td style="padding: 10px;">${backtest_bench_end_normalized:,.2f}</td>
                     </tr>
                 </table>
@@ -503,7 +503,7 @@ html_content = f"""
                         pointHoverRadius: 6
                     }},
                     {{
-                        label: 'Benchmark ({backtest_bench_return:+.2f}%)',
+                        label: 'SPY ({backtest_bench_return:+.2f}%)',
                         data: backtestBenchmark,
                         borderColor: '#ff7f0e',
                         backgroundColor: 'rgba(255, 127, 14, 0.05)',

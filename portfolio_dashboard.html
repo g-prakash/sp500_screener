@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
     <title>Portfolio Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -202,6 +205,7 @@
             <select id="viewSelector" onchange="switchView(this.value)">
                 <option value="hourly">Hourly Returns</option>
                 <option value="backtest">Backtest Results</option>
+                <option value="monthly">Monthly Picks</option>
             </select>
         </div>
         
@@ -257,7 +261,7 @@
                     <div class="stat-value positive">+5380.36%</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Benchmark Return (Monthly)</div>
+                    <div class="stat-label">SPY Return</div>
                     <div class="stat-value">+283.74%</div>
                 </div>
                 <div class="stat-card">
@@ -282,11 +286,11 @@
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">$548,035.77</td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>Benchmark Start Value</strong></td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>SPY Start Value</strong></td>
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">$10,000.00</td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px;"><strong>Benchmark End Value</strong></td>
+                        <td style="padding: 10px;"><strong>SPY End Value</strong></td>
                         <td style="padding: 10px;">$38,373.90</td>
                     </tr>
                 </table>
@@ -429,7 +433,7 @@
         </div>
         
         <div class="footer">
-            <p>Portfolio Dashboard | Last Updated: 2026-03-16 23:49:41 | Data from MultiDay Analysis</p>
+            <p>Portfolio Dashboard | Last Updated: 2026-03-16 23:58:47 | Data from MultiDay Analysis</p>
         </div>
     </div>
     
@@ -537,7 +541,7 @@
                         pointHoverRadius: 6
                     },
                     {
-                        label: 'Benchmark (+283.74%)',
+                        label: 'SPY (+283.74%)',
                         data: backtestBenchmark,
                         borderColor: '#ff7f0e',
                         backgroundColor: 'rgba(255, 127, 14, 0.05)',

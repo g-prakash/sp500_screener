@@ -3,13 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'portfolio_dashboard.html'
-      - 'hourly_index_*.csv'
-      - 'sp500_cache/picks_*.csv'
-      - 'sp500_cache/backtest_*.csv'
-      - 'portfolio_chart_*.png'
-      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 jobs:
