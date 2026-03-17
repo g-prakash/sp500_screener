@@ -1,0 +1,43 @@
+name: Update Hourly Returns
+
+on:
+  schedule:
+    # Runs every hour at the 5th minute (during market hours 9:30 AM - 4:00 PM ET)
+    # This is approximate since GitHub Actions doesn't support minute-level granularity for selective hours
+    - cron: '5 13-20 * * 1-5'  # Mon-Fri, 9:05 AM - 4:05 PM ET
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-hourly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install pandas numpy yfinance matplotlib requests lxml
+      
+      - name: Update hourly returns
+        run: |
+          cd $GITHUB_WORKSPACE
+          python hourly_retrurn.py
+      
+      - name: Regenerate dashboard
+        run: |
+          cd $GITHUB_WORKSPACE
+          python generate_dashboard.py
+      
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add hourly_index_*.csv portfolio_*.html portfolio_chart_*.png
+          git commit -m "Hourly returns updated on $(date -u +%Y-%m-%d\ %H:%M)" || true
+          git push
