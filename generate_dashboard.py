@@ -2,6 +2,7 @@ import pandas as pd
 import json
 from datetime import datetime
 from pathlib import Path
+import pytz
 
 # Load hourly returns data - find the latest hourly file
 hourly_files = sorted(Path('.').glob('hourly_index_picks_*.csv'))
@@ -10,6 +11,11 @@ if not hourly_files:
 hourly_file = hourly_files[-1]
 hourly_df = pd.read_csv(hourly_file, parse_dates=[0])
 hourly_df.columns = ['DateTime', 'Portfolio Value', 'SPY Value']
+
+# Convert timestamps from UTC to Eastern Time
+if hourly_df['DateTime'].dt.tz is None:
+    hourly_df['DateTime'] = hourly_df['DateTime'].dt.tz_localize('UTC')
+hourly_df['DateTime'] = hourly_df['DateTime'].dt.tz_convert('America/New_York')
 
 # Load backtest equity curve data
 backtest_file = Path('sp500_cache/backtest_equity_curve.csv')
@@ -29,7 +35,7 @@ for pick_file in pick_files[-12:]:  # Get last 12 months
         picks_data[date_str] = df
 
 # Format data for charts
-hourly_dates = hourly_df['DateTime'].dt.strftime('%Y-%m-%d %H:%M').tolist()
+hourly_dates = hourly_df['DateTime'].dt.strftime('%Y-%m-%d %H:%M ET').tolist()
 hourly_portfolio = hourly_df['Portfolio Value'].tolist()
 hourly_spy = hourly_df['SPY Value'].tolist()
 
