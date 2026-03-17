@@ -2,9 +2,9 @@ name: Update Hourly Returns
 
 on:
   schedule:
-    # Runs every hour at the 5th minute (during market hours 9:30 AM - 4:00 PM ET)
-    # This is approximate since GitHub Actions doesn't support minute-level granularity for selective hours
-    - cron: '5 13-20 * * 1-5'  # Mon-Fri, 9:05 AM - 4:05 PM ET
+    # Runs every 30 minutes during market hours (9:30 AM - 4:00 PM ET / 13:00-20:00 UTC)
+    # Runs at :05 and :35 of each hour for ~30 min intervals
+    - cron: '5,35 13-20 * * 1-5'  # Mon-Fri, every 30 min during market hours
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
