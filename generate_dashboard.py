@@ -39,18 +39,28 @@ spy_start = hourly_df['SPY Value'].iloc[0]
 spy_end = hourly_df['SPY Value'].iloc[-1]
 spy_return = (spy_end - spy_start) / spy_start * 100
 
-# Calculate backtest returns
+# Calculate backtest returns with normalization to $10,000
 backtest_dates = backtest_df['Date'].dt.strftime('%Y-%m-%d').tolist()
-backtest_strategy = backtest_df['Strategy'].tolist()
-backtest_benchmark = backtest_df['Benchmark'].tolist()
 
+# Normalize both strategy and benchmark to start at $10,000
 backtest_strat_start = backtest_df['Strategy'].iloc[0]
-backtest_strat_end = backtest_df['Strategy'].iloc[-1]
-backtest_strat_return = (backtest_strat_end - backtest_strat_start) / backtest_strat_start * 100
-
 backtest_bench_start = backtest_df['Benchmark'].iloc[0]
+backtest_strat_end = backtest_df['Strategy'].iloc[-1]
 backtest_bench_end = backtest_df['Benchmark'].iloc[-1]
+
+# Calculate returns BEFORE normalization
+backtest_strat_return = (backtest_strat_end - backtest_strat_start) / backtest_strat_start * 100
 backtest_bench_return = (backtest_bench_end - backtest_bench_start) / backtest_bench_start * 100
+
+# Normalize series to $10,000 start
+backtest_strategy = (backtest_df['Strategy'] / backtest_strat_start * 10000).tolist()
+backtest_benchmark = (backtest_df['Benchmark'] / backtest_bench_start * 10000).tolist()
+
+# Use normalized start value
+backtest_strat_start_normalized = 10000.0
+backtest_bench_start_normalized = 10000.0
+backtest_strat_end_normalized = backtest_strategy[-1]
+backtest_bench_end_normalized = backtest_benchmark[-1]
 
 # Build picks HTML tables
 picks_html = ""
@@ -356,19 +366,19 @@ html_content = f"""
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>Strategy Start Value</strong></td>
-                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_strat_start:,.2f}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_strat_start_normalized:,.2f}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>Strategy End Value</strong></td>
-                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_strat_end:,.2f}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_strat_end_normalized:,.2f}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border-bottom: 1px solid #e9ecef;"><strong>Benchmark Start Value</strong></td>
-                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_bench_start:,.2f}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e9ecef;">${backtest_bench_start_normalized:,.2f}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px;"><strong>Benchmark End Value</strong></td>
-                        <td style="padding: 10px;">${backtest_bench_end:,.2f}</td>
+                        <td style="padding: 10px;">${backtest_bench_end_normalized:,.2f}</td>
                     </tr>
                 </table>
             </div>
