@@ -1,9 +1,21 @@
-# Virtual Environment
-venv/
-env/
-ENV/
+# Cache
+*.pyc
 
-# Python
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+output.txt
+
+# Python build artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -25,21 +37,11 @@ wheels/
 .installed.cfg
 *.egg
 
-# Cache
-sp500_cache/
-*.csv
-*.pyc
+# Virtual Environment
+venv/
+env/
+ENV/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Temp
-output.txt
+# Ignore large raw data files but keep picks and results
+sp500_cache/sp500_all_*.csv
+sp500_cache/monthly_*.csv

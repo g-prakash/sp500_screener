@@ -3,8 +3,11 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-# Load hourly returns data
-hourly_file = Path('hourly_index_picks_2026-03-03.csv')
+# Load hourly returns data - find the latest hourly file
+hourly_files = sorted(Path('.').glob('hourly_index_picks_*.csv'))
+if not hourly_files:
+    raise FileNotFoundError("No hourly_index_picks_*.csv files found")
+hourly_file = hourly_files[-1]
 hourly_df = pd.read_csv(hourly_file, parse_dates=[0])
 hourly_df.columns = ['DateTime', 'Portfolio Value', 'SPY Value']
 

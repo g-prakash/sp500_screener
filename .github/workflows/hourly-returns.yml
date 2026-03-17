@@ -38,6 +38,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add hourly_index_*.csv portfolio_*.html portfolio_chart_*.png
-          git commit -m "Hourly returns updated on $(date -u +%Y-%m-%d\ %H:%M)" || true
+          git add -f hourly_index_*.csv portfolio_*.html portfolio_chart_*.png sp500_cache/picks_*.csv sp500_cache/backtest_*.csv sp500_cache/enhanced_*.csv
+          git diff --cached --quiet || git commit -m "Hourly returns updated on $(date -u +%Y-%m-%d\ %H:%M)"
           git push

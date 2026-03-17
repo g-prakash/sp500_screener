@@ -32,6 +32,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add sp500_cache/picks_*.csv
-          git commit -m "Monthly picks generated on $(date -u +%Y-%m-%d)" || true
+          git add -f sp500_cache/picks_*.csv sp500_cache/backtest_*.csv sp500_cache/enhanced_*.csv
+          git diff --cached --quiet || git commit -m "Monthly picks generated on $(date -u +%Y-%m-%d)"
           git push

@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-03-04
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2020-09-01 to 2026-02-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,SNDK,1242.6142231686872,57.673822457272806,199.78798152540682,3.190334373226791,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,MU,280.8855243242766,16.567549030617027,57.39167335583438,11.105974569973188,Micron Technology,Information Technology,Semiconductors
+2,WDC,218.6208261955319,20.745241623760784,71.8636250152927,8.869444933823845,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals"
+3,CIEN,171.23008131337357,20.110172579682665,69.6636813139777,9.14953750355732,Ciena,Information Technology,Communications Equipment
+4,STX,161.16047157976726,20.524079703600982,71.09749765046017,8.96501966850839,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals"
+5,ALB,153.608850176887,13.190615053372765,45.69363091104897,13.949219007325153,Albemarle Corporation,Materials,Specialty Chemicals
+6,LRCX,147.05410852061024,15.285062740689723,52.94901052750518,12.037816353282032,Lam Research,Information Technology,Semiconductor Materials & Equipment
+7,INTC,134.69698490555052,17.14542431471967,59.39349206084253,10.731654979390052,Intel,Information Technology,Semiconductors
+8,TER,124.77414368187696,11.898305777734604,41.21694026205332,15.464283878561519,Teradyne,Information Technology,Semiconductor Materials & Equipment
+9,WBD,109.11162305229945,28.148509726172428,97.5092980061547,6.536714732351707,Warner Bros. Discovery,Communication Services,Broadcasting
