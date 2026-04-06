@@ -26,7 +26,7 @@ jobs:
       - name: Generate monthly picks
         run: |
           cd $GITHUB_WORKSPACE
-          python sp500_momentum.py --refresh
+          python sp500_momentum.py --top-n 10 --years 10 --refresh
       
       - name: Commit and push changes
         run: |
