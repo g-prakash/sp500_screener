@@ -1,27 +1,40 @@
+import argparse
 import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pytz
+import re
 from datetime import datetime
 from pathlib import Path
 
 # === CONSTANTS ===
 SCRIPT_DIR = Path(__file__).resolve().parent
 CACHE_DIR = SCRIPT_DIR / "sp500_cache"
-PICKS_FILE = CACHE_DIR / "picks_2026-03-03.csv"
-START_DATE = "2026-03-03"
 END_DATE = (datetime.now() + pd.Timedelta(days=1)).strftime("%Y-%m-%d")  # Dynamic: tomorrow's date
 INITIAL_INVESTMENT = 10000
-INTERVAL = "30m" 
+INTERVAL = "1h"
 
-def load_picks():
-    """Load the picks CSV file."""
-    if not PICKS_FILE.exists():
-        raise FileNotFoundError(f"Picks file not found: {PICKS_FILE}")
-    
-    df = pd.read_csv(PICKS_FILE, comment='#')
-    print(f"Loaded {len(df)} picks from {PICKS_FILE.name}")
+
+def find_monthly_picks():
+    """Find all picks files from the 1st of each month, sorted by date."""
+    pattern = re.compile(r'picks_(\d{4}-\d{2}-01)\.csv')
+    picks_files = []
+    for f in sorted(CACHE_DIR.glob("picks_*-01.csv")):
+        match = pattern.search(f.name)
+        if match:
+            date_str = match.group(1)
+            picks_files.append((date_str, f))
+    return picks_files
+
+
+def load_picks(picks_file):
+    """Load a picks CSV file."""
+    if not picks_file.exists():
+        raise FileNotFoundError(f"Picks file not found: {picks_file}")
+
+    df = pd.read_csv(picks_file, comment='#')
+    print(f"Loaded {len(df)} picks from {picks_file.name}")
     return df
 
 def download_price_data(tickers, start_date, end_date):
@@ -154,23 +167,24 @@ def plot_portfolio_performance(df, starting_fund, save_path, spy_df=None):
     ax.grid(True, which='major', alpha=0.3, zorder=0)
     ax.grid(True, which='minor', alpha=0.15, linestyle=':', zorder=0)
     
-    # 10. X-AXIS TICKS: Only at whole hours 10:00, 12:00, 14:00, 16:00
+    # 10. X-AXIS TICKS: One label per trading day (first bar of each day)
     tick_positions = []
     tick_labels = []
     last_date = None
     
     for i, ts in enumerate(timestamps):
-        if ts.hour in [10, 12, 14, 16] and ts.minute == 0:
+        if ts.date() != last_date:
             tick_positions.append(i)
-            # Check if it's a new date
-            if last_date != ts.date():
-                label = ts.strftime('%b %d\n%H:%M')
-                last_date = ts.date()
-            else:
-                label = ts.strftime('%H:%M')
-            tick_labels.append(label)
+            tick_labels.append(ts.strftime('%b %d'))
+            last_date = ts.date()
     
-    ax.set_xticks(tick_positions, tick_labels, fontsize=8, rotation=90, ha='center')
+    # Thin out labels if too many days (show every Nth day)
+    if len(tick_positions) > 40:
+        step = max(1, len(tick_positions) // 20)
+        tick_positions = tick_positions[::step]
+        tick_labels = tick_labels[::step]
+    
+    ax.set_xticks(tick_positions, tick_labels, fontsize=8, rotation=45, ha='right')
     
     # 11. X-AXIS LIMITS with padding
     ax.set_xlim(-0.5, len(x_data) - 0.5)
@@ -208,72 +222,135 @@ def plot_portfolio_performance(df, starting_fund, save_path, spy_df=None):
     print(f"Chart saved to {save_path}")
     plt.show()
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Hourly portfolio returns using monthly picks')
+    parser.add_argument('--startdate', type=str, default=None,
+                        help='Start date in YYYY-MM-DD format (e.g. 2026-03-01). '
+                             'Only picks on or after this date will be used.')
+    return parser.parse_args()
+
+
 def main():
-    # 1. Load Data
-    try:
-        picks_df = load_picks()
-    except Exception as e:
-        print(f"Error loading CSV: {e}")
+    args = parse_args()
+
+    # 1. Find all monthly picks files
+    monthly_picks = find_monthly_picks()
+    if not monthly_picks:
+        print("No monthly picks files found (picks_YYYY-MM-01.csv) in", CACHE_DIR)
         return
 
-    tickers = picks_df['Ticker'].tolist()
-    weights = dict(zip(picks_df['Ticker'], picks_df['Weight (%)']))
-    
-    # 2. Get Prices
-    price_data = download_price_data(tickers, START_DATE, END_DATE)
-    
-    # 3. Download SPY for reference
-    print(f"\nDownloading SPY reference data from {START_DATE} to {END_DATE}...")
-    spy_data = yf.download('SPY', start=START_DATE, end=END_DATE, interval=INTERVAL, progress=False)
-    
-    # Handle both Series and DataFrame returns from yfinance
+    # Filter by --startdate if provided
+    if args.startdate:
+        monthly_picks = [(d, f) for d, f in monthly_picks if d >= args.startdate]
+        if not monthly_picks:
+            print(f"No monthly picks files found on or after {args.startdate}")
+            return
+
+    print(f"Found {len(monthly_picks)} monthly picks files:")
+    for date_str, f in monthly_picks:
+        print(f"  {f.name}")
+
+    # 2. Load all picks and collect unique tickers
+    all_tickers = set()
+    picks_by_month = []
+    for date_str, picks_file in monthly_picks:
+        df = load_picks(picks_file)
+        weights = dict(zip(df['Ticker'], df['Weight (%)']))
+        picks_by_month.append((date_str, weights))
+        all_tickers.update(df['Ticker'].tolist())
+
+    start_date = monthly_picks[0][0]
+    all_tickers = sorted(all_tickers)
+
+    # 3. Download all price data at once
+    price_data = download_price_data(all_tickers, start_date, END_DATE)
+
+    # 4. Download SPY for reference
+    print(f"\nDownloading SPY reference data from {start_date} to {END_DATE}...")
+    spy_data = yf.download('SPY', start=start_date, end=END_DATE, interval=INTERVAL, progress=False)
+
     if isinstance(spy_data, pd.DataFrame):
         spy_close = spy_data['Close']
     else:
         spy_close = spy_data
-    
-    # Ensure it's a Series, not a DataFrame
     if isinstance(spy_close, pd.DataFrame):
         spy_close = spy_close.squeeze()
-    
+
     spy_returns = spy_close.pct_change().fillna(0)
     spy_value = INITIAL_INVESTMENT * (1 + spy_returns).cumprod()
-    
-    # 4. Calculate Portfolio
-    portfolio_series = calculate_portfolio(price_data, weights)
-    
-    # 5. Create DataFrames with "Index Value ($)" column for the new plot function
+
+    # 5. Calculate portfolio by chaining monthly segments
+    portfolio_segments = []
+    current_value = INITIAL_INVESTMENT
+    tz = price_data.index.tz
+
+    for i, (date_str, weights) in enumerate(picks_by_month):
+        start_ts = pd.Timestamp(date_str, tz=tz)
+        if i + 1 < len(picks_by_month):
+            end_ts = pd.Timestamp(picks_by_month[i + 1][0], tz=tz)
+            segment_prices = price_data[(price_data.index >= start_ts) & (price_data.index < end_ts)]
+        else:
+            segment_prices = price_data[price_data.index >= start_ts]
+
+        if segment_prices.empty:
+            print(f"  No data for segment starting {date_str}, skipping...")
+            continue
+
+        available = [t for t in weights if t in segment_prices.columns]
+        if not available:
+            print(f"  No matching tickers for segment {date_str}, skipping...")
+            continue
+
+        sub_weights = {t: weights[t] for t in available}
+        total_w = sum(sub_weights.values())
+        norm_weights = {t: w / total_w for t, w in sub_weights.items()}
+
+        returns = segment_prices[available].pct_change().fillna(0)
+        portfolio_returns = (returns * pd.Series(norm_weights)).sum(axis=1)
+        segment_values = current_value * (1 + portfolio_returns).cumprod()
+
+        portfolio_segments.append(segment_values)
+        current_value = float(segment_values.iloc[-1])
+        print(f"  Segment {date_str}: {len(segment_values)} bars, "
+              f"end value: ${current_value:,.2f}")
+
+    if not portfolio_segments:
+        print("No portfolio data calculated.")
+        return
+
+    portfolio_series = pd.concat(portfolio_segments)
+
+    # 6. Create DataFrames with "Index Value ($)" column for the plot function
     portfolio_df = pd.DataFrame(index=portfolio_series.index)
     portfolio_df['Index Value ($)'] = portfolio_series.values
-    
+
     spy_df = pd.DataFrame(index=spy_value.index)
     spy_df['Index Value ($)'] = spy_value.values if isinstance(spy_value, pd.Series) else spy_value
-    
-    # 6. Save results to CSV
-    picks_filename = PICKS_FILE.stem  # Extract filename without extension (e.g., "picks_2026-03-03")
-    output_csv = SCRIPT_DIR / f"hourly_index_{picks_filename}.csv"
-    
-    # Create combined results DataFrame for CSV export
+
+    # 7. Save results to CSV
+    output_csv = SCRIPT_DIR / "hourly_index_monthly_picks.csv"
     results = pd.DataFrame(index=portfolio_series.index)
     results['Portfolio Value'] = portfolio_series.values
-    results['SPY Value'] = spy_value.values
+    spy_aligned = spy_value.reindex(portfolio_series.index, method='ffill')
+    results['SPY Value'] = spy_aligned.values
     results.to_csv(output_csv)
     print(f"\nResults saved to {output_csv.name}")
-    
-    # 7. Output summary
-    portfolio_final = float(portfolio_series.iloc[-1].item() if hasattr(portfolio_series.iloc[-1], 'item') else portfolio_series.iloc[-1])
-    spy_final = float(spy_value.iloc[-1].item() if hasattr(spy_value.iloc[-1], 'item') else spy_value.iloc[-1])
+
+    # 8. Output summary
+    portfolio_final = float(portfolio_series.iloc[-1])
+    spy_final = float(spy_value.iloc[-1])
     portfolio_return = (portfolio_final - INITIAL_INVESTMENT) / INITIAL_INVESTMENT * 100
     spy_return = (spy_final - INITIAL_INVESTMENT) / INITIAL_INVESTMENT * 100
-    
+
     print("\n" + "="*45)
+    print(f"Period: {start_date} to {END_DATE}")
     print(f"Start Value: ${INITIAL_INVESTMENT:,.2f}")
     print(f"Portfolio Final Value: ${portfolio_final:,.2f} ({portfolio_return:+.2f}%)")
     print(f"SPY Final Value: ${spy_final:,.2f} ({spy_return:+.2f}%)")
-    print(f"Current ET Time: {portfolio_series.index[-1]}")
+    print(f"Months tracked: {len(picks_by_month)}")
     print("="*45)
-    
-    # 8. Plot Portfolio Performance
+
+    # 9. Plot Portfolio Performance
     chart_path = SCRIPT_DIR / "portfolio_chart_fixed.png"
     plot_portfolio_performance(portfolio_df, INITIAL_INVESTMENT, chart_path, spy_df)
 
