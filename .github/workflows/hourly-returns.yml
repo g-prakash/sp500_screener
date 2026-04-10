@@ -27,7 +27,7 @@ jobs:
       - name: Update hourly returns
         run: |
           cd $GITHUB_WORKSPACE
-          python hourly_retrurn.py
+          python hourly_retrurn.py --startdate 2026-03-01
       
       - name: Regenerate dashboard
         run: |
