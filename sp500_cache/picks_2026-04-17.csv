@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-04-17
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2015-10-01 to 2026-03-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,SNDK,1110.9014114161446,59.5246842256136,206.19955476651288,2.6190726742816075,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,LITE,427.753923672275,28.937755222646423,100.24332460523046,5.387407305821031,Lumentum,Information Technology,Communications Equipment
+2,CIEN,271.07588344928854,19.10443169625917,66.1796926953003,8.160382699636788,Ciena,Information Technology,Communications Equipment
+3,WDC,248.83092191403344,19.133550605536353,66.28056355595844,8.147963601457016,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals"
+4,MU,246.8573652099279,18.858325992062632,65.32715752789846,8.266877662745001,Micron Technology,Information Technology,Semiconductors
+5,COHR,186.2053599890168,4.722342582486041,16.358674567223687,33.013164796374,Coherent Corp.,Information Technology,Electronic Components
+6,TER,171.13842606600434,13.52758092178832,46.8609149200736,11.524564133225411,Teradyne,Information Technology,Semiconductor Materials & Equipment
+7,STX,145.04116812352095,21.456355640264373,74.32699622840988,7.265887856928957,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals"
+8,WBD,142.01030279568303,25.944601629946884,89.87473641040462,6.008936892698213,Warner Bros. Discovery,Communication Services,Broadcasting
+9,LRCX,134.38608932190203,16.229820432885962,56.221747174955986,9.60574237683197,Lam Research,Information Technology,Semiconductor Materials & Equipment
