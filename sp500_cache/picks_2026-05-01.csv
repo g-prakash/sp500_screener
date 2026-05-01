@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-05-01
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2015-10-01 to 2026-04-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,SNDK,466.25672382910216,57.21119547992254,198.18539466596147,3.0797691069217605,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,LITE,331.9095204767952,32.022956233752865,110.93077441082892,5.502217569264005,Lumentum,Information Technology,Communications Equipment
+2,CIEN,166.51336298917667,12.998616829907936,45.028529555040876,13.555078568338356,Ciena,Information Technology,Communications Equipment
+3,WDC,125.73931245666259,17.3253048110029,60.01661637854906,10.169937806648486,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals"
+4,ALB,123.29659478773078,12.146169456762589,42.07556523290815,14.506406570099879,Albemarle Corporation,Materials,Specialty Chemicals
+5,COHR,121.13813963463333,12.092619238464978,41.890061835212414,14.57064585715787,Coherent Corp.,Information Technology,Electronic Components
+6,TER,115.85782946735495,17.29325072885175,59.90557778079749,10.1887883991159,Teradyne,Information Technology,Semiconductor Materials & Equipment
+7,MU,102.12055312360384,23.36830433424518,80.95018078728931,7.540011028995298,Micron Technology,Information Technology,Semiconductors
+8,MRNA,96.6705357611624,20.46105028079354,70.8791573251117,8.611350345711278,Moderna,Health Care,Biotechnology
+9,DOW,86.52153075022811,14.353227308681001,49.72103790244118,12.275794747747156,Dow Inc.,Materials,Commodity Chemicals
