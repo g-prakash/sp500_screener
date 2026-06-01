@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-06-01
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2015-11-01 to 2026-05-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,SNDK,450.0978275688722,56.6046239768761,196.08416934256175,3.986680234387293,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,LITE,347.6681971887368,31.884134310771415,110.44988116321235,7.077643488263087,Lumentum,Information Technology,Communications Equipment
+2,WDC,189.6461676228402,25.443900206767704,88.14025580166785,8.86910158229254,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals"
+3,CIEN,177.79066037086287,14.164967162645508,49.06888562649356,15.931172518256014,Ciena,Information Technology,Communications Equipment
+4,STX,164.4151562015332,31.833516032620313,110.27453430411363,7.088897605664887,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals"
+5,COHR,142.27794421707998,14.336445749654441,49.662904876712744,15.740619364389971,Coherent Corp.,Information Technology,Electronic Components
+6,INTC,136.25906324432026,47.085536884221014,163.10908437025833,4.792650790802815,Intel,Information Technology,Semiconductors
+7,MU,131.44762920245188,27.536623749875154,95.38966280738317,8.195069142583614,Micron Technology,Information Technology,Semiconductors
+8,ALB,101.3462515713909,11.752842227520697,40.71303974281365,19.20084786428225,Albemarle Corporation,Materials,Specialty Chemicals
+9,ON,101.29791108769753,24.751198785605236,85.74066768981072,9.11731740907752,ON Semiconductor,Information Technology,Semiconductors
