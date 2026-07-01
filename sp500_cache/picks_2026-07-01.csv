@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-07-01
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2016-01-01 to 2026-06-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,SNDK,659.1275482512735,54.94030956493846,190.31881510007153,5.246087497553923,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,MU,310.9439793764235,38.55388085252927,133.55456093107517,7.475814749307073,Micron Technology,Information Technology,Semiconductors
+2,WDC,225.65455019755794,24.612101831284168,85.25882170568637,11.71056714685011,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals"
+3,STX,219.3635420147097,31.372182275211426,108.67642728995592,9.187173164810494,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals"
+4,DELL,218.00484648940775,40.65161866896771,140.82133788913512,7.090041689788508,Dell Technologies,Information Technology,"Technology Hardware, Storage & Peripherals"
+5,CIEN,184.13396082090654,13.78937649727403,47.76780139594956,20.90171888318107,Ciena,Information Technology,Communications Equipment
+6,INTC,182.74160853626893,46.10198612205783,159.70196458647888,6.251827640511653,Intel,Information Technology,Semiconductors
+7,LITE,162.93517417384743,30.96752742561798,107.27466177190595,9.30722259995267,Lumentum,Information Technology,Communications Equipment
+8,FLEX,155.08373747655102,26.873162954004968,93.09136719282867,10.725260424821393,Flex Ltd.,Information Technology,Electronic Manufacturing Services
+9,ON,140.0875770636778,23.811538018955513,82.48558731037784,12.104286203223113,ON Semiconductor,Information Technology,Semiconductors
