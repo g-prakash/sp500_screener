@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-08-01
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2016-02-01 to 2026-07-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,SNDK,857.8439353353389,51.82939992415949,179.54230798890148,5.819325117189565,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,MU,304.6021429450249,38.641113129594636,133.85674240294946,7.805472057080159,Micron Technology,Information Technology,Semiconductors
+2,INTC,278.40108159585424,43.24297832907553,149.79807107311746,6.974823206955834,Intel,Information Technology,Semiconductors
+3,WDC,271.04098517011494,23.130798838617622,80.1274376162818,13.039416878416363,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals"
+4,STX,251.2736886107929,29.808909500930238,103.26109154766759,10.118187274784805,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals"
+5,MRVL,250.96913131305138,27.06817019071336,93.76689207647377,11.142686286603972,Marvell Technology,Information Technology,Semiconductors
+6,DELL,245.31967574376822,39.19771063123874,135.78485270737644,7.69463634305095,Dell Technologies,Information Technology,"Technology Hardware, Storage & Peripherals"
+7,GLW,192.71238852596312,20.378580505026104,70.59347364167569,14.800448378292863,Corning Inc.,Information Technology,Electronic Components
+8,AMAT,182.0349623743291,22.574004297894085,78.1986447484615,13.361037980118637,Applied Materials,Information Technology,Semiconductor Materials & Equipment
+9,AMD,171.25044976234736,32.62799897873173,113.0267039609376,9.24396647750686,Advanced Micro Devices,Information Technology,Semiconductors
