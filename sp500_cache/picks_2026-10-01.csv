@@ -1,0 +1,17 @@
+# Signal: 6-month momentum (skip=1)
+# Date: 2026-10-01
+# Universe: 503 stocks
+# Top N: 10
+# Min Market Cap: None
+# Price Data Range: 2016-04-01 to 2026-09-01
+index,Ticker,Momentum (%),Monthly Vol (%),Ann. Vol (%),Weight (%),Company,Sector,Industry
+0,DELL,209.4117153750386,39.16006202223357,135.65443410011395,7.585636592470922,Dell Technologies,Information Technology,"Technology Hardware, Storage & Peripherals"
+1,MRNA,161.97498065591725,66.96560927593636,231.97567525145493,4.435918714862349,Moderna,Health Care,Biotechnology
+2,MRVL,159.29513915662508,34.99756519060719,121.23512210267121,8.487847592295093,Marvell Technology,Information Technology,Semiconductors
+3,PANW,156.60086595575794,20.579918957581153,71.29093050036096,14.43416760054141,Palo Alto Networks,Information Technology,Systems Software
+4,CRWD,148.40044430074522,23.7358861063816,82.22352139784228,12.514974082194483,CrowdStrike,Information Technology,Systems Software
+5,SNDK,146.58461144747358,42.37856718282181,146.80366302523686,7.009533808865934,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals"
+6,HPE,145.60165141019294,16.89774656986479,58.535511184857064,17.579503764664565,Hewlett Packard Enterprise,Information Technology,"Technology Hardware, Storage & Peripherals"
+7,AMD,135.11312393762557,34.29656834641068,118.80679780248362,8.661333006815946,Advanced Micro Devices,Information Technology,Semiconductors
+8,MU,132.62610026709785,43.591621689925084,151.00580710254346,6.814474615151586,Micron Technology,Information Technology,Semiconductors
+9,FTNT,116.2849491534586,23.80887069087177,82.47634741485484,12.476610222137715,Fortinet,Information Technology,Systems Software
